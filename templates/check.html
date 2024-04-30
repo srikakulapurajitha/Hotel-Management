@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Room Availability</title>
+    <meta charset="utf-8">
+
+</head>
+
+<style>
+    h1 {
+        text-align: center;
+    }
+    
+    body {
+        background-color: rgb(250, 245, 194);
+    }
+    
+    .table1 {
+        font-size: small;
+        margin: 2px;
+        border: 1px solid rgb(15, 9, 1);
+        width: 49%;
+        table-layout: fixed;
+        float: left;
+        background-color: #a0f3b9;
+        box-shadow: 5px 10px 5px 10px #E3F2FD;
+    }
+    
+    .table1 tbody {
+        display: block;
+        width: 100%;
+        overflow: auto;
+        max-height: 405px;
+    }
+    
+    .table1 thead tr {
+        display: block;
+    }
+    
+    .table1 thead {
+        background: #BDBDBD;
+        color: #000;
+    }
+    
+    .table1 th,
+    .table1 td {
+        padding: 5px;
+        text-align: center;
+        width: 200px;
+    }
+    
+    .table1 td {
+        border: 1px solid black;
+        border-collapse: collapse;
+    }
+    
+    .table2 {
+        font-size: small;
+        border: 1px solid rgb(15, 9, 1);
+        width: 49%;
+        table-layout: fixed;
+        border-collapse: collapse;
+        float: right;
+        background-color: #f49b9b;
+        box-shadow: 5px 10px 5px 10px #E3F2FD;
+    }
+    
+    .table2 tbody {
+        display: block;
+        width: 100%;
+        overflow: auto;
+        max-height: 405px;
+    }
+    
+    .table2 thead tr {
+        display: block;
+    }
+    
+    .table2 thead {
+        background: #BDBDBD;
+        color: #000;
+    }
+    
+    .table2 th,
+    .table2 td {
+        padding: 5px;
+        text-align: center;
+        width: 200px;
+    }
+    
+    .table2 button:hover {
+        background-color: red;
+    }
+    
+    tr,
+    td {
+        border: 1px solid black;
+        border-collapse: collapse;
+    }
+    
+    tr:hover {
+        background-color: azure;
+    }
+    .back{
+        float:left;
+
+    }
+    .out{
+        float:right;
+    }
+    .back button:hover {
+        background-color: green;
+    }
+    .out button:hover {
+        background-color: red;
+    }
+</style>
+</head>
+
+
+<body>
+    <nav>
+        <div class="back">
+            <button onclick="location.href='{% url 'user' %}'" style="border-radius: 30px;">Back</button>
+        </div>                  
+        <div class="out">
+            <button onclick="location.href='{% url 'login' %}'" style="border-radius: 30px;">Logout</button>
+        </div>
+    </nav>
+    <h1><u>ROOMS AVAILIBILITY</u></h1>
+    <div class="container">
+        <div class='table1'>
+            <h1><u> AVAILABLE ROOMS</u></h1>
+            <center>
+                <table>
+                    <thead>
+                        {%if d1|length == 50%}
+                        <p>
+                            <h1>All ROOMS BOOKED</h1>
+                        </p>
+                        {% else %}
+                        <tr>
+                            <th>ROOM NO</th>
+                            <th>Type</th>
+                            <th>NO of BEDS</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for e in data %}
+                        <tr>
+                            <td>{{e.0}}</td>
+                            <td>{{e.1}}</td>
+                            <td>{{e.2}}</td>
+                            <td>{{e.3}}</td>
+                        </tr>
+                        {% endfor %}{%endif%}
+                    </tbody>
+                </table>
+            </center>
+        </div>
+        <div class='table2'>
+            <h1><u> UN-AVAILABLE ROOMS</u></h1>
+            <center>
+                <table>
+                    <thead>
+                        {%if d1|length == 0%}
+                        <p>
+                            <h1>NO Bookings</h1>
+                        </p>
+                        {% else %}
+                        <tr>
+                            <th>ROOM NO.</th>
+                            <th>Name</th>
+                            <th>Mobile NO.</th>
+                            <th>Check IN</th>
+                            <th>Check OUT</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for e in d1 %}
+                        <tr>
+                            <td>{{e.0}}</td>
+                            <td>{{e.1}}</td>
+                            <td>{{e.2}}</td>
+                            <td>{{e.3}}</td>
+                            <td>{{e.4}}</td>
+                            <td>{{e.5}}
+                                <form action="{% url 'show' %}" method="post">
+                                    {% csrf_token %} {% load static %}
+                                    <button onclick="return fun({{e.0}})" name={{e.0}} style="border-radius: 30px;">Cancle</button></form>
+                            </td>
+                        </tr>
+                        {% endfor %} {%endif%}
+                    </tbody>
+                </table>
+            </center>
+            <script>
+                function fun(a) {
+                    alert(`ROOM NO:${a}\nBooking cancelled!`);
+                }
+            </script>
+        </div>
+    </div>
+
+</body>
+
+</html>
